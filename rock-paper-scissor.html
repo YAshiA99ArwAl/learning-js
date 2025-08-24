@@ -21,7 +21,22 @@
     compare('Scissors');
     ">Scissors</button>
 
+    <button onclick="
+    score.wins = 0;
+    score.losses = 0;
+    score.ties = 0;
+    localStorage.removeItem('score');
+    ">Reset Score</button>
+
     <script>
+      const score = {
+        wins: 0,
+        losses: 0,
+        ties: 0
+      };
+
+      console.log(JSON.parse(localStorage.getItem('score')));
+
       function compare(choice){
         let result = '';
         const compMove = pickComp();
@@ -29,9 +44,9 @@
         if(choice==='Rock'){
          if(compMove==='Rock') {
             result='Tie';
-          } else if(compMove=='Paper'){
+          } else if(compMove==='Paper'){
             result='You Loose';
-          } else if(compMove='Scissors'){
+          } else if(compMove==='Scissors'){
             result='You Win';
           } 
         } else if(choice==='Paper'){
@@ -52,7 +67,18 @@
           }
         }
 
-        alert(`You chose ${choice}. Computer picked ${compMove}. ${result}`);
+        if(result === 'You Win') {
+          score.wins += 1;
+        } else if(result ==='You Loose') {
+          score.losses+=1;
+        } else if(result === 'Tie') {
+          score.ties += 1;
+        }
+
+        localStorage.setItem('score', JSON.stringify(score));
+
+        alert(`You chose ${choice}. Computer picked ${compMove}. ${result}
+Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`);
       }
       
       function pickComp(){
